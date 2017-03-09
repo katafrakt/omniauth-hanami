@@ -1,0 +1,34 @@
+module OmniAuth
+  module Strategies
+    class Hanami
+      include OmniAuth::Strategy
+
+      option :auth_key, ->(params) { params['user']['email'] }
+      option :repository, nil
+      option :encryption, :bcrypt
+      option :repository_method, :find_by_credentials
+
+      def request_phase
+        return fail!(:invalid_credentials) unless identity
+        env['omniauth.auth'] = identity.to_hash
+        redirect_to '/auth/hanami/callback'
+      end
+
+      private
+
+      def identity
+        method = options.fetch(:repository_method)
+        conditions = { auth_key: options.fetch(:auth_key).(request.params) }
+        @identity ||= repository.new.public_send(method, conditions, request['password'])
+      end
+
+      def repository
+        options.fetch(:repository)
+      end
+
+      def model
+        options.fetch(:model)
+      end
+    end
+  end
+end

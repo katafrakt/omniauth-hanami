@@ -49,10 +49,10 @@ class FindUserForAuth
 
   def call
     user = UserRepository.new.find_by_email(@login)
-    if user && user.credentials.first && SCrypt::Password.new(user.credentials.first.crypted_password) == @password
+    if user && SCrypt::Password.new(user.crypted_password) == @password
       @user = user
     else
-     fail!
+      fail!
     end
   end
 end

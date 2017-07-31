@@ -3,8 +3,8 @@ module OmniAuth
     class Hanami
       include OmniAuth::Strategy
 
-      option :auth_key, ->(params) { params['user']['email'] }
-      option :password_key, ->(params) { params['user']['password'] }
+      option :auth_key, ->(params) { params.fetch('user', {})['email'] }
+      option :password_key, ->(params) { params.fetch('user', {})['password'] }
       option :encryption, :bcrypt
       option :interactor
 

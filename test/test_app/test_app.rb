@@ -3,23 +3,10 @@ require 'omniauth/hanami'
 require 'hanami/controller'
 require 'hanami/interactor'
 
-class Credentials < Hanami::Entity
-end
-
 class User < Hanami::Entity
 end
 
-class CredentialsRepository < Hanami::Repository
-  associations do
-    belongs_to :user
-  end
-end
-
 class UserRepository < Hanami::Repository
-  associations do
-    has_many :credentials
-  end
-
   def find_by_email(email)
     root.where(email: email).map_to(User).one
   end

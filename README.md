@@ -115,7 +115,7 @@ end
 | option | descriptions | default |
 |--------|--------------|---------|
 | `auth_key` | How to get auth key from params | `->(params) { params['user']['email'] }` |
-| `password` | How to get password from params | `->(params) { params['user']['password'] }` |
+| `password_key` | How to get password from params | `->(params) { params['user']['password'] }` |
 
 Example:
 
@@ -124,7 +124,7 @@ middleware.use OmniAuth::Builder do
   provider :hanami, 
       interactor: FindUserForAuth, 
       auth_key: ->(params) { params['login_or_email'] }, 
-      password: ->(params) { params['password'] + '1234' }
+      password_key: ->(params) { params['password'] + '1234' }
 end
 ```
 
